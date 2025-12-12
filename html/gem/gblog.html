@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radikal Blog Konsepti</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #dbf246; /* Neon Lime */
+            --border-color: #333;
+            --secondary-accent: #ff4d00;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Space Mono', monospace; /* Genel font */
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .display-font {
+            font-family: 'Syne', sans-serif; /* Başlık fontu */
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        /* --- Sol Panel (Sabit) --- */
+        .sidebar-panel {
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .brand-logo {
+            font-size: 4rem;
+            line-height: 0.8;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .brand-logo:hover {
+            transform: skewX(-10deg);
+        }
+
+        .nav-link {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+            border-bottom: 1px solid transparent;
+            width: fit-content;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+            padding-left: 20px;
+        }
+
+        .nav-link::before {
+            content: "->";
+            opacity: 0;
+            margin-right: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .nav-link:hover::before {
+            opacity: 1;
+        }
+
+        /* --- Sağ Panel (Scroll) --- */
+        .content-panel {
+            margin-left: 33.3333%; /* col-lg-4 genişliği kadar */
+            min-height: 100vh;
+            border-left: 1px solid var(--border-color); /* Mobil fallback */
+        }
+
+        /* --- Marquee (Kayan Yazı) --- */
+        .marquee-container {
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .marquee-text {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* --- Post Stilleri --- */
+        .post-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 4rem 2rem;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .post-item:hover {
+            background-color: #111;
+        }
+
+        .post-meta {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .post-title {
+            font-size: 3.5rem;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            color: white;
+            transition: color 0.3s;
+        }
+
+        .post-item:hover .post-title {
+            color: var(--accent-color);
+            -webkit-text-stroke: 1px var(--accent-color);
+        }
+
+        .post-image-wrapper {
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .post-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: transform 0.5s, filter 0.5s;
+        }
+
+        .post-item:hover .post-image {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .read-btn {
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            padding: 10px 30px;
+            text-decoration: none;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+
+        .read-btn:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+            border-color: var(--accent-color);
+            box-shadow: 5px 5px 0px var(--secondary-accent);
+        }
+
+        /* --- Mobil Uyumluluk --- */
+        @media (max-width: 991px) {
+            .sidebar-panel {
+                position: relative;
+                height: auto;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 2rem;
+            }
+            .content-panel {
+                margin-left: 0;
+            }
+            .post-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Özel İmleç */
+        .cursor-dot {
+            width: 20px;
+            height: 20px;
+            background-color: var(--secondary-accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transition: transform 0.1s;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor" class="cursor-dot d-none d-lg-block"></div>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            
+            <div class="col-lg-4">
+                <div class="sidebar-panel">
+                    <div>
+                        <div class="brand-logo">NO<br>CONTEXT.</div>
+                        <p class="text-muted">Dijital çağın gürültüsünde<br>anlamlı sessizlikler.</p>
+                    </div>
+
+                    <nav class="nav flex-column gap-3 my-5">
+                        <a class="nav-link" href="#">Manifesto</a>
+                        <a class="nav-link" href="#">Yazılar</a>
+                        <a class="nav-link" href="#">Projeler</a>
+                        <a class="nav-link" href="#">İletişim</a>
+                    </nav>
+
+                    <div class="d-flex justify-content-between align-items-end">
+                        <div class="socials">
+                            <a href="#" class="text-white me-3 fs-4"><i class="bi bi-twitter"></i></a>
+                            <a href="#" class="text-white me-3 fs-4"><i class="bi bi-instagram"></i></a>
+                            <a href="#" class="text-white fs-4"><i class="bi bi-github"></i></a>
+                        </div>
+                        <div class="text-end text-muted" style="font-size: 0.7rem;">
+                            © 2024<br>IST / TR
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 content-panel">
+                
+                <div class="marquee-container">
+                    <div class="marquee-text">
+                        YENİ YAZI: YAPAY ZEKA VE SANATIN ÖLÜMÜ /// SİBERPUNK ESTETİĞİ NEDEN GERİ DÖNDÜ? /// KOD YAZARKEN DİNLENECEK ALBÜMLER /// 
+                    </div>
+                </div>
+
+                <article class="post-item">
+                    <span class="post-meta">11 ARALIK 2024 / TEKNOLOJİ / 5 DK OKUMA</span>
+                    <h2 class="post-title">SİLİKON VADİSİ'NİN<br>KARANLIK YÜZÜ</h2>
+                    <div class="post-image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" class="post-image" alt="Cyberpunk City">
+                    </div>
+                    <p class="lead text-muted mt-4">Teknolojik ilerlemenin bedeli nedir? Veri gizliliğinin sona erdiği noktada insanlık nerede başlar? Derin bir inceleme.</p>
+                    <a href="#" class="read-btn">İncelemeyi Oku</a>
+                </article>
+
+                <article class="post-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 order-md-2">
+                             <div class="post-image-wrapper">
+                                <img src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?q=80&w=2070&auto=format&fit=crop" class="post-image" style="height: 300px;" alt="Minimalism">
+                            </div>
+                        </div>
+                        <div class="col-md-6 order-md-1">
+                            <span class="post-meta">#TASARIM #MINIMALIZM</span>
+                            <h2 class="post-title" style="font-size: 2.5rem;">BOŞLUĞUN GÜCÜ</h2>
+                            <p class="text-muted">Neden daha az her zaman daha fazladır? Brutalist web tasarımın yükselişi.</p>
+                            <a href="#" class="read-btn">Keşfet</a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="post-item bg-white text-dark">
+                    <span class="post-meta text-dark fw-bold">:: HIZLI NOTLAR ::</span>
+                    <h2 class="post-title text-dark" style="font-size: 4rem;">KOD. KAHVE.<br>TEKRAR ET.</h2>
+                    <p class="lead">Bazen görsellere ihtiyaç duymazsınız. Kelimelerin gücü tek başına yeterlidir. Bu bir tipografi denemesidir.</p>
+                    <a href="#" class="read-btn" style="border-color: #000; color: #000; hover: {background: #000; color: #fff;}">Okumaya Devam Et</a>
+                </article>
+
+                <article class="post-item">
+                    <span class="post-meta">FOTOĞRAFÇILIK / ANALOG</span>
+                    <h2 class="post-title">FİLM RULOLARI ARASINDA KAYBOLMAK</h2>
+                    <div class="post-image-wrapper mt-4">
+                        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1638&auto=format&fit=crop" class="post-image" alt="Camera">
+                    </div>
+                    <a href="#" class="read-btn mt-4">Galeriyi Gör</a>
+                </article>
+
+                <footer class="p-5 border-top border-secondary">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="display-font text-uppercase">Bültene Abone Ol</h4>
+                            <div class="input-group mb-3 mt-3">
+                                <input type="text" class="form-control bg-transparent text-white border-secondary" placeholder="Email adresi" style="border-radius: 0;">
+                                <button class="btn btn-outline-light" type="button" style="border-radius: 0;">GÖNDER</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p class="text-muted">Bu tasarım Bootstrap 5 ile<br>radikal bir bakış açısıyla kodlandı.</p>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Linklerin üzerine gelince cursor büyümesi
+        const links = document.querySelectorAll('a, button');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2.5)';
+                cursor.style.backgroundColor = '#dbf246';
+                cursor.style.mixBlendMode = 'normal';
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.backgroundColor = '#ff4d00';
+                cursor.style.mixBlendMode = 'difference';
+            });
+        });
+    </script>
+</body>
+</html>

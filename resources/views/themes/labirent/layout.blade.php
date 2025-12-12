@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', $settings->site_name ?? 'GBlog')</title>
+    <meta name="description" content="@yield('description', $settings->site_description ?? '')">
+
+    @livewireStyles
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a0a0a;
+            --accent: #ff6b35;
+            --accent2: #f7931e;
+            --accent3: #00d9ff;
+            --surface: #ffffff;
+            --surface-dark: #1a1a1a;
+            --text: #2a2a2a;
+            --text-light: #666;
+            --border: rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(0, 217, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(247, 147, 30, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+            position: relative;
+        }
+
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 2px;
+        }
+
+        .nav-link {
+            color: var(--text);
+            font-weight: 500;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown-menu {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            animation: dropdownFade 0.3s ease-out;
+        }
+
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            color: var(--text);
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: var(--border);
+        }
+
+        .dropdown-toggle::after {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-item.dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 6rem 0 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 7rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-light);
+            max-width: 600px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Bento Grid Container */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            padding: 4rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Blog Cards - Asymmetric Bento Layout */
+        .blog-card {
+            background: var(--surface);
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            animation: fadeInScale 0.6s ease-out both;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        /* Featured Large Card */
+        .blog-card.featured {
+            grid-column: span 8;
+            grid-row: span 2;
+            min-height: 600px;
+            animation-delay: 0.1s;
+        }
+
+        /* Medium Cards */
+        .blog-card.medium {
+            grid-column: span 4;
+            min-height: 400px;
+            animation-delay: 0.2s;
+        }
+
+        /* Small Cards */
+        .blog-card.small {
+            grid-column: span 4;
+            min-height: 300px;
+            animation-delay: 0.3s;
+        }
+
+        /* Wide Card */
+        .blog-card.wide {
+            grid-column: span 6;
+            min-height: 400px;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Card Image */
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .blog-card:hover .card-image {
+            transform: scale(1.1);
+        }
+
+        /* Card Overlay */
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 3rem 2.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 60%, transparent 100%);
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        .blog-card:hover .card-overlay {
+            padding: 3.5rem 2.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
+        }
+
+        /* Card Category Badge */
+        .card-category {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--accent);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        /* Card Title */
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .featured .card-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+        }
+
+        /* Card Excerpt */
+        .card-excerpt {
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .blog-card:hover .card-excerpt {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Card Meta */
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Text-Only Card Variant */
+        .blog-card.text-only {
+            background: linear-gradient(135deg, var(--surface) 0%, #f8f8f8 100%);
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .blog-card.text-only .card-category {
+            background: var(--accent3);
+        }
+
+        .blog-card.text-only .card-title {
+            color: var(--primary);
+        }
+
+        .blog-card.text-only .card-excerpt {
+            color: var(--text);
+            opacity: 1;
+            transform: none;
+        }
+
+        .blog-card.text-only .card-meta {
+            color: var(--text-light);
+        }
+
+        /* Accent Card */
+        .blog-card.accent-bg {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            padding: 3rem;
+        }
+
+        .blog-card.accent-bg .card-category {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .blog-card.accent-bg .card-excerpt {
+            opacity: 1;
+        }
+
+        /* Load More Section */
+        .load-more {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .btn-load {
+            padding: 1.2rem 3rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+
+        .btn-load:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+            background: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--surface-dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .blog-card.featured,
+            .blog-card.medium,
+            .blog-card.small,
+            .blog-card.wide {
+                grid-column: span 6;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .blog-card.featured,
+            .blog-card.medium,
+            .blog-card.small,
+            .blog-card.wide {
+                grid-column: span 12;
+                min-height: 350px;
+            }
+
+            .hero {
+                padding: 3rem 0 2rem;
+            }
+
+            .bento-grid {
+                gap: 1.5rem;
+                padding: 2rem 0;
+            }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .contact-items {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.2);
+        }
+
+        .contact-item h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p,
+        .contact-item a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .contact-form-wrapper {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 60px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-form .form-control {
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .contact-form .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+            outline: none;
+            background: white;
+        }
+
+        .contact-form textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1.2rem 2rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+        }
+
+        .btn-submit svg {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-submit:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('blog.index') }}">Anasayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('blog.index') }}">Yazılar</a>
+                    </li>
+                @php($menuCategories = $menuCategories ?? collect())
+                @if($menuCategories->count())
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Kategoriler
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @foreach($menuCategories as $cat)
+
+                            <li><a class="dropdown-item" href="{{ route('blog.category', $cat->slug) }}"> {{$cat->name}}</a></li>
+                            @endforeach
+
+                        </ul>
+                    </li>
+                @endif
+                @php($menuPages = $menuPages ?? collect())
+                @foreach($menuPages as $page)
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('blog.page', $page->slug) }}">{{ $page->title }}</a>
+                    </li>
+                @endforeach
+
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#iletisim">İletişim</a>
+                    </li>
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/admin') }}">Admin</a>
+                        </li>
+                    @endauth
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+@yield('hero')
+@yield('content')
+
+<footer class="footer">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div class="text-white-50">
+            © {{ date('Y') }} {{ $settings->site_name ?? 'GBlog' }}
+        </div>
+        <div class="social-inline">
+            @php($social = app(\App\Settings\SocialSettings::class)->links ?? [])
+            @forelse($social as $link)
+                <a href="{{ $link['url'] ?? '#' }}" target="_blank" rel="noopener">
+                    <i class="{{ $link['icon']}}"></i>
+                </a>
+            @empty
+                <a href="#" class="text-white-50">Sosyal ekle</a>
+            @endforelse
+        </div>
+    </div>
+</footer>
+
+@livewireScripts
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkımda - Labirent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a0a0a;
+            --accent: #ff6b35;
+            --accent2: #f7931e;
+            --accent3: #00d9ff;
+            --surface: #ffffff;
+            --surface-dark: #1a1a1a;
+            --text: #2a2a2a;
+            --text-light: #666;
+            --border: rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #fafafa;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+            position: relative;
+            text-decoration: none;
+        }
+
+        .navbar-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 40%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 2px;
+        }
+
+        .nav-link {
+            color: var(--text);
+            font-weight: 500;
+            margin: 0 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown-menu {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            animation: dropdownFade 0.3s ease-out;
+        }
+
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-item {
+            color: var(--text);
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            border-color: var(--border);
+        }
+
+        /* Hero Section */
+        .about-hero {
+            padding: 6rem 0 4rem;
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .about-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            max-width: 700px;
+            line-height: 1.8;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Profile Section */
+        .profile-section {
+            padding: 6rem 0;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+            animation: fadeInScale 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .profile-image {
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-image-bg {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            border-radius: 24px;
+            z-index: 0;
+        }
+
+        .profile-content {
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .section-label {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .text-content {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: var(--text);
+            margin-bottom: 2rem;
+        }
+
+        .text-content strong {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 3.5rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Values Section */
+        .values-section {
+            padding: 6rem 0;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .value-card {
+            padding: 3rem;
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+            border-radius: 20px;
+            border-left: 5px solid var(--accent);
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .value-card:nth-child(1) { animation-delay: 0.1s; border-color: var(--accent); }
+        .value-card:nth-child(2) { animation-delay: 0.2s; border-color: var(--accent2); }
+        .value-card:nth-child(3) { animation-delay: 0.3s; border-color: var(--accent3); }
+
+        .value-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .value-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .value-description {
+            color: var(--text-light);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Journey Section */
+        .journey-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, var(--surface-dark) 0%, #2a2a2a 100%);
+            color: white;
+        }
+
+        .journey-timeline {
+            max-width: 800px;
+            margin: 4rem auto 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 4rem;
+            margin-bottom: 4rem;
+            animation: fadeInLeft 0.6s ease-out both;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 0 8px rgba(255, 107, 53, 0.2);
+        }
+
+        .timeline-year {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-description {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+
+        .btn-primary-cta {
+            padding: 1.2rem 3rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(255, 107, 53, 0.4);
+            color: white;
+        }
+
+        .btn-secondary-cta {
+            padding: 1.2rem 3rem;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-cta:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--surface-dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            display: block;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 3rem 0 2rem;
+            }
+
+            .profile-section {
+                padding: 3rem 0;
+            }
+
+            .stats-grid,
+            .values-grid {
+                gap: 1.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .timeline-item {
+                padding-left: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">LABIRENT</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Anasayfa</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Kategoriler
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#teknoloji">🚀 Teknoloji</a></li>
+                            <li><a class="dropdown-item" href="#seyahat">✈️ Seyahat</a></li>
+                            <li><a class="dropdown-item" href="#girisimcilik">💡 Girişimcilik</a></li>
+                            <li><a class="dropdown-item" href="#kisisel-gelisim">📈 Kişisel Gelişim</a></li>
+                            <li><a class="dropdown-item" href="#sanat">🎨 Sanat & Kültür</a></li>
+                            <li><a class="dropdown-item" href="#edebiyat">📚 Edebiyat</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#tum-kategoriler">📋 Tüm Kategoriler</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="hakkimda.html">Hakkımda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#iletisim">İletişim</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Merhaba,<br>Ben Gökhan</h1>
+                <p class="hero-subtitle">Teknoloji tutkunu, dijital pazarlama stratejisti ve sürekli öğrenen bir yazılımcı. Fikirleri hayata geçirmeyi ve deneyimlerimi paylaşmayı seviyorum.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <div class="profile-image-wrapper">
+                        <div class="profile-image-bg"></div>
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Profil" class="profile-image">
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="profile-content">
+                        <span class="section-label">Hikayem</span>
+                        <h2 class="section-title">Tutkular ve<br>Keşifler</h2>
+                        <div class="text-content">
+                            <p>Teknoloji dünyasında <strong>10+ yıldır</strong> aktif olarak yer alıyorum. Web geliştirmeden dijital pazarlamaya, startup ekosisteminden kişisel gelişime kadar geniş bir yelpazede deneyim kazandım.</p>
+                            
+                            <p>Her proje benim için yeni bir öğrenme fırsatı. <strong>Yapay zeka</strong>, <strong>otomasyon</strong> ve <strong>sosyal medya teknolojileri</strong> üzerine özellikle çalışıyorum. Aynı zamanda farklı kültürleri keşfetmeyi, yeni yerler görmeyi ve bu deneyimleri yazıya dökmeyi seviyorum.</p>
+                            
+                            <p>Bu blog, düşüncelerimi paylaştığım, öğrendiklerimi aktardığım ve sizlerle bağ kurduğum bir platform. Amacım ilham vermek, bilgi paylaşmak ve anlamlı konuşmalar başlatmak.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">Sayılarla</span>
+                <h2 class="section-title">Yolculuğum</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-number">250+</div>
+                    <div class="stat-label">Yayınlanan Yazı</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Aylık Okuyucu</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-number">37</div>
+                    <div class="stat-label">Ziyaret Edilen Ülke</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💼</div>
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Tamamlanan Proje</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label">Değerlerim</span>
+                <h2 class="section-title">Neye İnanıyorum</h2>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🚀</div>
+                    <h3 class="value-title">Sürekli Gelişim</h3>
+                    <p class="value-description">Her gün yeni bir şey öğrenmek, kendini geliştirmek ve sınırları zorlamak. Durağanlık değil, ilerleme benim mottomu.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💡</div>
+                    <h3 class="value-title">Yaratıcı Düşünce</h3>
+                    <p class="value-description">Sıradışı çözümler üretmek, farklı perspektiflerden bakmak ve inovasyon yaratmak. Hayal gücünün sınırı yok.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3 class="value-title">Paylaşmak</h3>
+                    <p class="value-description">Bilgiyi saklamak değil, paylaşmak büyütür. Deneyimlerimi açıkça aktararak topluluk oluşturmaya inanıyorum.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey Timeline -->
+    <section class="journey-section">
+        <div class="container">
+            <div class="text-center">
+                <span class="section-label" style="background: rgba(255,255,255,0.2);">Zaman Çizelgesi</span>
+                <h2 class="section-title" style="color: white;">Yolculuğum</h2>
+            </div>
+            <div class="journey-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2024</div>
+                    <h3 class="timeline-title">SMM Teknolojileri & Otomasyon</h3>
+                    <p class="timeline-description">Sosyal medya pazarlama otomasyonu ve toplu hizmet platformları üzerine yoğunlaştım. 50+ platform desteği ile yenilikçi çözümler geliştirdim.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2022</div>
+                    <h3 class="timeline-title">Dijital Girişimcilik</h3>
+                    <p class="timeline-description">Kendi dijital ürünlerimi geliştirmeye başladım. Web uygulamaları, API servisleri ve SaaS çözümleri ürettim.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2018</div>
+                    <h3 class="timeline-title">Freelance Kariyere Başlangıç</h3>
+                    <p class="timeline-description">Bağımsız çalışmaya başladım. Dünya çapında müşterilerle çalışarak farklı sektörlerde deneyim kazandım.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2014</div>
+                    <h3 class="timeline-title">Profesyonel Hayata Adım</h3>
+                    <p class="timeline-description">İlk profesyonel projelerim ve web geliştirme dünyasına giriş. Her satır kod bir öğrenme deneyimi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Birlikte Çalışalım</h2>
+                <p class="text-content">Bir projeniz mi var? Yazılarım hakkında konuşmak mı istiyorsunuz? Ya da sadece merhaba demek mi? Her türlü işbirliğine ve sohbete açığım.</p>
+                <div class="cta-buttons">
+                    <a href="index.html#iletisim" class="btn-primary-cta">İletişime Geç</a>
+                    <a href="index.html" class="btn-secondary-cta">Yazıları İncele</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h4 class="footer-title">Labirent</h4>
+                    <p style="color: rgba(255,255,255,0.7);">Düşüncelerin kesiştiği, hikayelerin doğduğu yer. Her yazı bir keşif, her kelime bir yolculuk.</p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Kategoriler</h4>
+                    <div class="footer-links">
+                        <a href="#">Teknoloji</a>
+                        <a href="#">Seyahat</a>
+                        <a href="#">Girişimcilik</a>
+                        <a href="#">Kişisel Gelişim</a>
+                        <a href="#">Sanat & Kültür</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-title">Keşfet</h4>
+                    <div class="footer-links">
+                        <a href="hakkimda.html">Hakkımda</a>
+                        <a href="#">Arşiv</a>
+                        <a href="#">Popüler Yazılar</a>
+                        <a href="#">Bülten</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="footer-title">Bağlantılar</h4>
+                    <div class="footer-links">
+                        <a href="#">Instagram</a>
+                        <a href="#">Twitter</a>
+                        <a href="#">LinkedIn</a>
+                        <a href="#">RSS Feed</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Labirent Blog. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

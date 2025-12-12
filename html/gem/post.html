@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silikon Vadisi'nin Karanlık Yüzü - Detay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #dbf246;
+            --border-color: #333;
+            --secondary-accent: #ff4d00;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Space Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .display-font {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        /* --- Sol Panel (Aynı Kalmalı) --- */
+        .sidebar-panel {
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .brand-logo { font-size: 4rem; line-height: 0.8; color: var(--accent-color); text-transform: uppercase; margin-bottom: 2rem; }
+        .nav-link { font-size: 1.5rem; color: var(--text-color); text-transform: uppercase; width: fit-content; transition: all 0.3s; }
+        .nav-link:hover { color: var(--accent-color); padding-left: 20px; }
+
+        /* --- Sağ Panel (İçerik) --- */
+        .content-panel {
+            margin-left: 33.3333%;
+            min-height: 100vh;
+            border-left: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        /* --- Okuma Barı --- */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .progress-bar {
+            height: 4px;
+            background: var(--secondary-accent);
+            width: 0%;
+        }
+
+        /* --- Makale Stilleri --- */
+        .article-header {
+            padding: 4rem 4rem 2rem 4rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .back-btn {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 5px 15px;
+            display: inline-block;
+            margin-bottom: 2rem;
+            transition: 0.3s;
+        }
+        .back-btn:hover { background: var(--accent-color); color: var(--bg-color); }
+
+        .article-title { font-size: 4.5rem; line-height: 0.95; margin-bottom: 1rem; color: white; }
+        
+        .article-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+        .meta-item { padding: 1rem 0; border-right: 1px solid var(--border-color); font-size: 0.8rem; text-transform: uppercase; color: #888; }
+        .meta-item:last-child { border-right: none; }
+        .meta-value { display: block; color: var(--text-color); font-weight: bold; margin-top: 5px; }
+
+        .hero-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border-color);
+            filter: grayscale(100%) contrast(1.2);
+            transition: filter 1s;
+        }
+        .hero-image:hover { filter: grayscale(0%) contrast(1); }
+
+        .article-body {
+            padding: 4rem 8rem; /* Kenarlardan boşluk verip dergi havası */
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        /* Drop Cap (Devasa İlk Harf) */
+        .drop-cap::first-letter {
+            font-family: 'Syne', sans-serif;
+            font-size: 5rem;
+            float: left;
+            line-height: 0.8;
+            margin-right: 1rem;
+            color: var(--accent-color);
+            font-weight: 800;
+        }
+
+        /* Alıntı Kutusu */
+        .pull-quote {
+            border-left: 4px solid var(--secondary-accent);
+            padding-left: 2rem;
+            margin: 3rem -4rem 3rem 0; /* Sağdan taşır */
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(90deg, #1a1a1a 0%, transparent 100%);
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .highlight-text { background: var(--accent-color); color: var(--bg-color); padding: 0 5px; font-weight: bold; }
+
+        /* Etiketler */
+        .tag-cloud { padding: 2rem 4rem; border-top: 1px solid var(--border-color); }
+        .custom-tag {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 5px 15px;
+            margin-right: 10px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+        .custom-tag:hover { border-color: var(--text-color); color: var(--text-color); }
+
+        /* Mobil Uyumluluk */
+        @media (max-width: 991px) {
+            .sidebar-panel { position: relative; height: auto; width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 2rem; }
+            .content-panel { margin-left: 0; }
+            .article-header { padding: 2rem; }
+            .article-title { font-size: 2.5rem; }
+            .article-body { padding: 2rem; }
+            .meta-grid { grid-template-columns: 1fr; }
+            .meta-item { border-right: none; border-bottom: 1px solid var(--border-color); }
+            .pull-quote { margin: 2rem 0; font-size: 1.5rem; }
+        }
+
+        /* Cursor */
+        .cursor-dot {
+            width: 20px; height: 20px; background-color: var(--secondary-accent); border-radius: 50%;
+            position: fixed; pointer-events: none; mix-blend-mode: difference; z-index: 9999; transition: transform 0.1s;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="cursor" class="cursor-dot d-none d-lg-block"></div>
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            
+            <div class="col-lg-4">
+                <div class="sidebar-panel">
+                    <div>
+                        <div class="brand-logo"><a href="index.html" style="text-decoration:none; color:inherit;">NO<br>CONTEXT.</a></div>
+                    </div>
+                    <nav class="nav flex-column gap-3 my-5">
+                        <a class="nav-link" href="#">Manifesto</a>
+                        <a class="nav-link" href="#" style="color: var(--accent-color);">Yazılar</a>
+                        <a class="nav-link" href="#">Projeler</a>
+                        <a class="nav-link" href="#">İletişim</a>
+                    </nav>
+                    <div class="text-muted" style="font-size: 0.7rem;">© 2024 IST / TR</div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 content-panel">
+                
+                <div class="progress-container">
+                    <div class="progress-bar" id="myBar"></div>
+                </div>
+
+                <header class="article-header">
+                    <a href="index.html" class="back-btn"><i class="bi bi-arrow-left"></i> Geri Dön</a>
+                    <h1 class="article-title">SİLİKON VADİSİ'NİN<br>KARANLIK YÜZÜ</h1>
+                    
+                    <div class="article-meta-grid">
+                        <div class="meta-item">Yazar <span class="meta-value">Eren Yılmaz</span></div>
+                        <div class="meta-item">Tarih <span class="meta-value">11.12.2024</span></div>
+                        <div class="meta-item">Okuma Süresi <span class="meta-value">5 Dakika</span></div>
+                    </div>
+                </header>
+
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" class="hero-image" alt="Article Hero">
+
+                <article class="article-body">
+                    <p class="drop-cap lead mb-5">
+                        Teknolojik ilerlemenin bedeli nedir? Her yeni güncelleme, her yeni algoritma hayatımızı kolaylaştırırken bizden neleri geri alıyor? Veri gizliliğinin fiilen sona erdiği bu noktada, insanlık kavramı nerede bitiyor ve "kullanıcı" kavramı nerede başlıyor?
+                    </p>
+
+                    <h3 class="mt-5 mb-4 text-white">Algoritmik Manipülasyon</h3>
+                    <p>
+                        Sosyal medya platformları, sadece eğlence araçları değil, aynı zamanda davranış değiştirme makineleridir. <span class="highlight-text">Dopamin döngüleri</span> üzerine kurulu bu sistemler, bizi ekran başında tutmak için en ilkel dürtülerimizi kullanır. Silikon Vadisi mühendisleri, buna "dikkat ekonomisi" adını veriyor. Ancak asıl soru şu: Dikkatimizi kime ve ne uğruna satıyoruz?
+                    </p>
+                    <p>
+                        Sistemin çalışma prensibi basittir: Sizi analiz et, zayıf noktalarını bul ve buna uygun içeriği besle. Bu süreç, bireyin kendi özgür iradesini sorgulamasına neden olacak kadar derinleşmiştir.
+                    </p>
+
+                    <div class="pull-quote">
+                        "Eğer bir ürüne para ödemiyorsanız, ürün sizsinizdir. Ama artık durum daha kötü: Siz sadece veri madenindeki hammaddeisiniz."
+                    </div>
+
+                    <p>
+                        Geleneksel medya araçlarının aksine, dijital platformlar geri bildirim döngüsünü milisaniyeler içinde tamamlar. Siz bir gönderiye bakarken, sistem sizin göz bebeklerinizin hareketini bile (bazı VR teknolojilerinde) takip edebilir.
+                    </p>
+
+                    <h3 class="mt-5 mb-4 text-white">Geleceğin Distopyası Şimdidir</h3>
+                    <p>
+                        Cyberpunk edebiyatının bize vaat ettiği distopya, neon ışıklı yağmurlu sokaklar değil, aydınlık ofislerde yazılan kod satırlarıdır. Özgürlük, artık fiziksel bir kısıtlama değil, dijital bir sınırlamadır.
+                    </p>
+                    <ul>
+                        <li class="mb-2">Veri Madenciliği ve Gözetim Kapitalizmi</li>
+                        <li class="mb-2">Yapay Zeka Etiği ve Önyargılar</li>
+                        <li class="mb-2">Dijital Minimalizm İhtiyacı</li>
+                    </ul>
+                    <p class="mt-4">
+                        Sonuç olarak, teknolojiyi reddetmek imkansızdır. Ancak onunla kurduğumuz ilişkiyi yeniden tanımlamak zorundayız. Aksi takdirde, araçlarımızın araçları haline geleceğiz.
+                    </p>
+                </article>
+
+                <div class="tag-cloud">
+                    <span class="text-uppercase me-3 fw-bold" style="font-size: 0.8rem;">Etiketler:</span>
+                    <a href="#" class="custom-tag">Teknoloji</a>
+                    <a href="#" class="custom-tag">Distopya</a>
+                    <a href="#" class="custom-tag">Gelecek</a>
+                    <a href="#" class="custom-tag">Web3</a>
+                </div>
+
+                <div class="p-5 border-top border-secondary bg-darker">
+                    <h4 class="mb-4 text-uppercase">Bunu okuyanlar şuna da baktı:</h4>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-transparent border border-secondary text-white h-100 rounded-0 p-3">
+                                <h5 class="card-title font-syne">YAPAY ZEKA VE SANAT</h5>
+                                <a href="#" class="text-muted text-decoration-none small">Okumaya Başla -></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card bg-transparent border border-secondary text-white h-100 rounded-0 p-3">
+                                <h5 class="card-title font-syne">ANALOG FOTOĞRAFÇILIK</h5>
+                                <a href="#" class="text-muted text-decoration-none small">Okumaya Başla -></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        const links = document.querySelectorAll('a, button, .custom-tag');
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(2.5)';
+                cursor.style.backgroundColor = '#dbf246';
+                cursor.style.mixBlendMode = 'normal';
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                cursor.style.backgroundColor = '#ff4d00';
+                cursor.style.mixBlendMode = 'difference';
+            });
+        });
+
+        // Scroll Progress Bar Logic
+        window.onscroll = function() {myFunction()};
+
+        function myFunction() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+        }
+    </script>
+</body>
+</html>
